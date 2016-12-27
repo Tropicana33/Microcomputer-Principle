@@ -1,0 +1,278 @@
+Turbo Assembler	 Version 5.0	    06-14-05 15:53:15	    Page 1
+实验14~1.ASM
+
+
+
+      1					 ;8259-1.asm
+      2					 ;8259中断查询方式应用实验
+      3
+      4					 ;*****************************************************************
+      5					 ;	   2008年03月为8259应用修改
+      6					 ;*****************************************************************
+      7		  =E980			 ioport	  equ	0ec00h-0280h
+      8		  =EC30			 I8259_1  EQU	ioport+2B0H	  ;8259的ICW1端口地址（A0=0，偶地址）
+      9		  =EC31			 I8259_2  EQU	ioport+2B1H	  ;8259的ICW2端口地址（A0=1，奇地址）
+     10		  =EC31			 I8259_3  EQU	ioport+2B1H	  ;8259的ICW3端口地址
+     11		  =EC31			 I8259_4  EQU	ioport+2B1H	  ;8259的ICW4端口地址
+     12		  =EC31			 O8259_1  EQU	ioport+2B1H	  ;8259的OCW1端口地址
+     13		  =EC30			 O8259_2  EQU	ioport+2B0H	  ;8259的OCW2端口地址
+     14		  =EC30			 O8259_3  EQU	ioport+2B0H	  ;8259的OCW3端口地址
+     15
+     16	    0000			 data segment
+     17
+     18	    0000  79 6F	75 20 63 61 6E+	  mes1 db 'you can play	a key on the keyboard!',0dh,0ah,24h
+     19		  20 70	6C 61 79 20 61+
+     20		  20 6B	65 79 20 6F 6E+
+     21		  20 74	68 65 20 6B 65+
+     22		  79 62	6F 61 72 64 21+
+     23		  0D 0A	24
+     24	    0026  00000000sr		  mes2 dd  mes1
+     25	    002A  48 65	6C 6C 6F 21 20+	  mess1	db 'Hello! This	is interrupt	*  0  *!',0dh,0ah,'$'
+     26		  54 68	69 73 20 69 73+
+     27		  20 69	6E 74 65 72 72+
+     28		  75 70	74 20 20 20 20+
+     29		  2A 20	20 30 20 20 2A+
+     30		  21 0D	0A 24
+     31	    0051  48 65	6C 6C 6F 21 20+	  mess2	db 'Hello! This	is interrupt	*  1  *!',0dh,0ah,'$'
+     32		  54 68	69 73 20 69 73+
+     33		  20 69	6E 74 65 72 72+
+     34		  75 70	74 20 20 20 20+
+     35		  2A 20	20 31 20 20 2A+
+     36		  21 0D	0A 24
+     37	    0078  48 65	6C 6C 6F 21 20+	  mess3	db 'Hello! This	is interrupt	*  2  *!',0dh,0ah,'$'
+     38		  54 68	69 73 20 69 73+
+     39		  20 69	6E 74 65 72 72+
+     40		  75 70	74 20 20 20 20+
+     41		  2A 20	20 32 20 20 2A+
+     42		  21 0D	0A 24
+     43	    009F  48 65	6C 6C 6F 21 20+	  mess4	db 'Hello! This	is interrupt	*  3  *!',0dh,0ah,'$'
+     44		  54 68	69 73 20 69 73+
+     45		  20 69	6E 74 65 72 72+
+     46		  75 70	74 20 20 20 20+
+     47		  2A 20	20 33 20 20 2A+
+     48		  21 0D	0A 24
+     49	    00C6  48 65	6C 6C 6F 21 20+	  mess5	db 'Hello! This	is interrupt	*  4  *!',0dh,0ah,'$'
+     50		  54 68	69 73 20 69 73+
+     51		  20 69	6E 74 65 72 72+
+     52		  75 70	74 20 20 20 20+
+     53		  2A 20	20 34 20 20 2A+
+     54		  21 0D	0A 24
+     55	    00ED  48 65	6C 6C 6F 21 20+	  mess6	db 'Hello! This	is interrupt	*  5  *!',0dh,0ah,'$'
+     56		  54 68	69 73 20 69 73+
+     57		  20 69	6E 74 65 72 72+
+Turbo Assembler	 Version 5.0	    06-14-05 15:53:15	    Page 2
+实验14~1.ASM
+
+
+
+     58		  75 70	74 20 20 20 20+
+     59		  2A 20	20 35 20 20 2A+
+     60		  21 0D	0A 24
+     61	    0114  48 65	6C 6C 6F 21 20+	  mess7	db 'Hello! This	is interrupt	*  6  *!',0dh,0ah,'$'
+     62		  54 68	69 73 20 69 73+
+     63		  20 69	6E 74 65 72 72+
+     64		  75 70	74 20 20 20 20+
+     65		  2A 20	20 36 20 20 2A+
+     66		  21 0D	0A 24
+     67	    013B  48 65	6C 6C 6F 21 20+	  mess8	db 'Hello! This	is interrupt	*  7  *!',0dh,0ah,'$'
+     68		  54 68	69 73 20 69 73+
+     69		  20 69	6E 74 65 72 72+
+     70		  75 70	74 20 20 20 20+
+     71		  2A 20	20 37 20 20 2A+
+     72		  21 0D	0A 24
+     73	    0162			 data ends
+     74
+     75	    0000			 stacks	segment
+     76	    0000  64*(??)		  db 100 dup(?)
+     77	    0064			 stacks	ends
+     78	    0000			 STACK1	SEGMENT	STACK
+     79	    0000  0100*(????)			 DW 256	DUP(?)
+     80	    0200			 STACK1	ENDS
+     81
+     82	    0000			 CODE SEGMENT
+     83						 ASSUME	CS:CODE,DS:DATA,SS:stacks,ES:DATA
+     84					 .386
+     85	    0000  B8 0000s		 START:	mov ax,data
+     86	    0003  8E D8				mov ds,ax
+     87	    0005  8E C0				mov es,ax
+     88	    0007  B8 0000s			mov ax,stacks
+     89	    000A  8E D0				mov ss,ax
+     90
+     91
+     92	    000C  BA EC30			MOV  DX,I8259_1		;初始化8259的ICW1
+     93	    000F  B0 13				MOV  AL,13H		;边沿触发、单片8259、需要ICW4
+     94	    0011  EE				OUT  DX,AL
+     95
+     96	    0012  BA EC31			MOV  DX,I8259_2		;初始化8259的ICW2
+     97	    0015  B0 B0				MOV  AL,0B0H		 ;00001011BIN,						    +
+     98					 定义中断类型号，查询结果（IR1～IR7）将显示在低三位
+     99	    0017  EE				OUT  DX,AL
+    100						;MOV  AL,00H（8080/8085手动EOI的时候用）
+    101						;OUT  DX,AL
+    102	    0018  B0 03				MOV  AL,03H		 ;初始化ICW4，8086系统，自动EOI
+    103	    001A  EE				OUT  DX,AL
+    104
+    105	    001B  BA EC31			MOV  DX,O8259_1		;初始化8259的OCW1
+    106	    001E  B0 00				MOV  AL,00H	       ;打开IR0和IR1的屏蔽位
+    107	    0020  EE				OUT  DX,AL
+    108
+    109	    0021  B4 01			 QUERY:	MOV  AH,1		;判断是否有按键按下
+    110	    0023  CD 16				INT  16H
+    111	    0025  0F 85	00C3			JNZ  QUIT		;有按键则退出
+    112
+    113	    0029  BA EC30			MOV  DX,O8259_3		;向8259的OCW3发送查询命令
+    114	    002C  B0 0C				MOV  AL,0CH
+Turbo Assembler	 Version 5.0	    06-14-05 15:53:15	    Page 3
+实验14~1.ASM
+
+
+
+    115	    002E  EE				OUT  DX,AL
+    116
+    117
+    118	    002F  EC				IN   AL,DX		;读出查询字
+    119	    0030  8A E0				MOV  AH,AL
+    120	    0032  24 80				AND  AL,80H
+    121	    0034  A8 80				TEST AL,80H		;把低位清零查看最高位，判断中断是否已响应
+    122	    0036  74 E9				JZ   QUERY		;没有响应则继续查询
+    123	    0038  8A C4				MOV  AL,AH
+    124	    003A  24 07				AND  AL,07H
+    125	    003C  3C 00				CMP  AL,00H
+    126	    003E  74 2E	90 90			JE   IR0ISR		 ;若为IR0请求，跳到IR0处理程序
+    127	    0042  3C 01				CMP  AL,01H
+    128	    0044  74 37	90 90			JE  IR1ISR		;若为IR1请求，跳到IR1处理程序
+    129	    0048  3C 02				CMP  AL,02H
+    130	    004A  74 40	90 90			JE   IR2ISR
+    131	    004E  3C 03				CMP  AL,03H
+    132	    0050  74 49	90 90			JE   IR3ISR
+    133	    0054  3C 04				CMP  AL,04H
+    134	    0056  74 52	90 90			JE   IR4ISR
+    135	    005A  3C 05				CMP  AL,05H
+    136	    005C  74 5B	90 90			JE   IR5ISR
+    137	    0060  3C 06				CMP  AL,06H
+    138	    0062  74 64	90 90			JE   IR6ISR
+    139	    0066  3C 07				CMP  AL,07H
+    140	    0068  74 6D	90 90			JE   IR7ISR
+    141	    006C  EB B3				JMP  QUERY
+    142
+    143	    006E  B8 0000s		 IR0ISR: MOV AX,DATA
+    144	    0071  8E D8				 MOV DS,AX
+    145	    0073  BA 002Ar			 MOV DX,offset mess1	 ;显示提示信息
+    146	    0076  B4 09				 MOV AH,09
+    147	    0078  CD 21				 INT 21H
+    148	    007A  EB 67	90			 JMP  EOI
+    149
+    150	    007D  B8 0000s		 IR1ISR: MOV AX,DATA
+    151	    0080  8E D8				 MOV DS,AX
+    152	    0082  BA 0051r			 MOV DX,offset mess2	 ;显示提示信息
+    153	    0085  B4 09				 MOV AH,09
+    154	    0087  CD 21				 INT 21H
+    155	    0089  EB 58	90			 JMP  EOI
+    156
+    157	    008C  B8 0000s		 IR2ISR: MOV AX,DATA
+    158	    008F  8E D8				 MOV DS,AX
+    159	    0091  BA 0078r			 MOV DX,offset mess3	 ;显示提示信息
+    160	    0094  B4 09				 MOV AH,09
+    161	    0096  CD 21				 INT 21H
+    162	    0098  EB 49	90			 JMP  EOI
+    163	    009B  B8 0000s		 IR3ISR: MOV AX,DATA
+    164	    009E  8E D8				 MOV DS,AX
+    165	    00A0  BA 009Fr			 MOV DX,offset mess4	 ;显示提示信息
+    166	    00A3  B4 09				 MOV AH,09
+    167	    00A5  CD 21				 INT 21H
+    168	    00A7  EB 3A	90			 JMP  EOI
+    169	    00AA  B8 0000s		 IR4ISR: MOV AX,DATA
+    170	    00AD  8E D8				 MOV DS,AX
+    171	    00AF  BA 00C6r			 MOV DX,offset mess5	 ;显示提示信息
+Turbo Assembler	 Version 5.0	    06-14-05 15:53:15	    Page 4
+实验14~1.ASM
+
+
+
+    172	    00B2  B4 09				 MOV AH,09
+    173	    00B4  CD 21				 INT 21H
+    174	    00B6  EB 2B	90			 JMP  EOI
+    175	    00B9  B8 0000s		 IR5ISR: MOV AX,DATA
+    176	    00BC  8E D8				 MOV DS,AX
+    177	    00BE  BA 00EDr			 MOV DX,offset mess6	;显示提示信息
+    178	    00C1  B4 09				 MOV AH,09
+    179	    00C3  CD 21				 INT 21H
+    180	    00C5  EB 1C	90			 JMP  EOI
+    181	    00C8  B8 0000s		 IR6ISR: MOV AX,DATA
+    182	    00CB  8E D8				 MOV DS,AX
+    183	    00CD  BA 0114r			 MOV DX,offset mess7	 ;显示提示信息
+    184	    00D0  B4 09				 MOV AH,09
+    185	    00D2  CD 21				 INT 21H
+    186	    00D4  EB 0D	90			 JMP  EOI
+    187	    00D7  B8 0000s		 IR7ISR: MOV AX,DATA
+    188	    00DA  8E D8				 MOV DS,AX
+    189	    00DC  BA 013Br			 MOV DX,offset mess8	 ;显示提示信息
+    190	    00DF  B4 09				 MOV AH,09
+    191	    00E1  CD 21				 INT 21H
+    192
+    193	    00E3			 EOI:
+    194	    00E3  BA EC30			MOV  DX,O8259_2		 ;向8259发送中断结束命令
+    195	    00E6  B0 20				MOV  AL,20H
+    196	    00E8  EE				OUT  DX,AL
+    197	    00E9  E9 FF35			JMP  QUERY
+    198
+    199	    00EC  B8 4C00		 QUIT:	MOV  AX,4C00H		 ;结束程序退出
+    200	    00EF  CD 21				INT  21H
+    201
+    202
+    203	    00F1			 CODE ENDS
+    204					      END START
+Turbo Assembler	 Version 5.0	    06-14-05 15:53:15	    Page 5
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "06-14-05"
+??FILENAME			  Text	 "实验14~1"
+??TIME				  Text	 "15:53:15"
+??VERSION			  Number 0500
+@CPU				  Text	 0F0FH
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 实验14~1
+@WORDSIZE			  Text	 4
+EOI				  Near16 CODE:00E3
+I8259_1				  Number EC30
+I8259_2				  Number EC31
+I8259_3				  Number EC31
+I8259_4				  Number EC31
+IOPORT				  Number E980
+IR0ISR				  Near16 CODE:006E
+IR1ISR				  Near16 CODE:007D
+IR2ISR				  Near16 CODE:008C
+IR3ISR				  Near16 CODE:009B
+IR4ISR				  Near16 CODE:00AA
+IR5ISR				  Near16 CODE:00B9
+IR6ISR				  Near16 CODE:00C8
+IR7ISR				  Near16 CODE:00D7
+MES1				  Byte	 DATA:0000
+MES2				  Dword	 DATA:0026
+MESS1				  Byte	 DATA:002A
+MESS2				  Byte	 DATA:0051
+MESS3				  Byte	 DATA:0078
+MESS4				  Byte	 DATA:009F
+MESS5				  Byte	 DATA:00C6
+MESS6				  Byte	 DATA:00ED
+MESS7				  Byte	 DATA:0114
+MESS8				  Byte	 DATA:013B
+O8259_1				  Number EC31
+O8259_2				  Number EC30
+O8259_3				  Number EC30
+QUERY				  Near16 CODE:0021
+QUIT				  Near16 CODE:00EC
+START				  Near16 CODE:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  00F1 Para	  none
+DATA				  16  0162 Para	  none
+STACK1				  16  0200 Para	  Stack
+STACKS				  16  0064 Para	  none
+

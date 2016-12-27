@@ -1,0 +1,26 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00007H 00008H DATA               
+ 00010H 00014H 00005H EXTRA              
+ 00020H 0003FH 00020H STACKS             
+ 00040H 00072H 00033H CODE               
+
+
+Detailed map of segments
+
+ 0000:0000 0008 C=       S=DATA           G=(none)    M=D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NONAME.ASM ACBP=60
+ 0001:0000 0005 C=       S=EXTRA          G=(none)   M=D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NONAME.ASM ACBP=60
+ 0002:0000 0020 C=       S=STACKS         G=(none)  M=D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NONAME.ASM ACBP=60
+ 0004:0000 0033 C=       S=CODE           G=(none)    M=D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NONAME.ASM ACBP=60
+
+Line numbers for d:\学习\微机原~1\姚国斌\微机原~1\实验二~1\noname.obj(D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NONAME.ASM) segment CODE
+
+    13 0004:0000    14 0004:0003    15 0004:0005    16 0004:0008
+    17 0004:000A    18 0004:000D    19 0004:000F    20 0004:0012
+    21 0004:0015    22 0004:0018    23 0004:001B    24 0004:001F
+    25 0004:0023    26 0004:0026    27 0004:0029    28 0004:002D
+    29 0004:002E    30 0004:002F    31 0004:0031
+Program entry point at 0004:0000
+Warning: No stack
+

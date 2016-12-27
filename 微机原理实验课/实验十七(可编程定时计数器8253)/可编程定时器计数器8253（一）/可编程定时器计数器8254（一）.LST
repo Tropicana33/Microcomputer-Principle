@@ -1,0 +1,73 @@
+Turbo Assembler	 Version 5.0	    06-21-05 15:28:47	    Page 1
+可编程~1.ASM
+
+
+
+      1	      =E980		     ioport	     equ 0ec00h-0280h
+      2	      =EC03		     io8253a	     equ ioport+283h
+      3	      =EC00		     io8253b	     equ ioport+280h
+      4	0000			     code segment
+      5					     assume  cs:code
+      6	0000  B0 14		     start: mov	al,14h	     ;设置8254通道0为工作方式2,二进制计数
+      7	0002  BA EC03			      mov dx,io8253a
+      8	0005  EE			      out dx,al
+      9	0006  BA EC00			      mov dx,io8253b	  ;送计数初值为0FH
+     10	0009  B0 0F			      mov al,0fh
+     11	000B  EE			      out dx,al
+     12	000C  EC		     lll:     in al,dx	       ;读计数初值
+     13	000D  E8 000E			      call disp	       ;调显示子程序
+     14	0010  52			      push dx
+     15	0011  B4 06			      mov ah,06h
+     16	0013  B2 FF			      mov dl,0ffh
+     17	0015  CD 21			      int 21h
+     18	0017  5A			      pop dx
+     19	0018  74 F2			      jz lll
+     20	001A  B4 4C			      mov ah,4ch       ;退出
+     21	001C  CD 21			      int 21h
+     22	001E			     disp   proc near	     ;显示子程序
+     23	001E  52			      push dx
+     24	001F  24 0F		      and al,0fh       ;首先取低四位
+     25	0021  8A D0			      mov dl,al
+     26	0023  80 FA 09			      cmp dl,9	       ;判断是否<=9
+     27	0026  7E 03			      jle  num	       ;若是则为'0'-'9',ASCII码加30H
+     28	0028  80 C2 07			      add dl,7	       ;否则为'A'-'F',ASCII码加37H
+     29	002B  80 C2 30		     num:     add dl,30h
+     30	002E  B4 02			      mov ah,02h       ;显示
+     31	0030  CD 21			      int 21h
+     32	0032  B2 0D			      mov dl,0dh       ;加回车符
+     33	0034  CD 21			      int 21h
+     34	0036  B2 0A			      mov dl,0ah       ;加换行符
+     35	0038  CD 21			      int 21h
+     36	003A  5A			      pop dx
+     37	003B  C3			      ret	       ;子程序返回
+     38	003C				 disp endp
+     39	003C				 code ends
+     40				     end start
+Turbo Assembler	 Version 5.0	    06-21-05 15:28:47	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "06-21-05"
+??FILENAME			  Text	 "可编程~1"
+??TIME				  Text	 "15:28:47"
+??VERSION			  Number 0500
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 可编程~1
+@WORDSIZE			  Text	 2
+DISP				  Near16 CODE:001E
+IO8253A				  Number EC03
+IO8253B				  Number EC00
+IOPORT				  Number E980
+LLL				  Near16 CODE:000C
+NUM				  Near16 CODE:002B
+START				  Near16 CODE:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  003C Para	  none
+

@@ -1,0 +1,53 @@
+Turbo Assembler	 Version 5.0	    06-28-05 15:12:51	    Page 1
+实验04~1.ASM
+
+
+
+      1	      =E980		     ioport	     equ 0ec00h-0280h
+      2	      =EC08		     io8255a	     equ ioport+288h ;A口
+      3	      =EC0B		     io8255b	     equ ioport+28bh ;控制口
+      4	      =EC0A		     io8255c	     equ ioport+28ah ;C口
+      5	0000			     code   segment
+      6					       assume cs:code
+      7	0000  BA EC0B		     start:  mov dx,io8255b	      ;设8255为C口输入,A口输出
+      8	0003  B0 8B			       mov al,8bh		;10001011B,A口方式0输出，C，B口输入，B口工作方式0
+      9	0005  EE		     ，	       out dx,al
+     10	0006  BA EC0A		     inout:  mov dx,io8255c	      ;从C口输入一数据
+     11	0009  EC			       in al,dx
+     12	000A  BA EC08			       mov dx,io8255a		;从A口输出刚才自C口所输入的数据
+     13	000D  EE			       out dx,al
+     14	000E  B2 FF			     mov dl,0ffh	      ;判断是否有按键
+     15	0010  B4 06			       mov ah,06h
+     16	0012  CD 21			       int 21h
+     17	0014  74 F0			       jz inout		       ;若无,则继续自C口输入,A口输出
+     18	0016  B4 4C			       mov ah,4ch	       ;否则返回DOS
+     19	0018  CD 21			       int 21h
+     20	001A			     code   ends
+     21					       end start
+Turbo Assembler	 Version 5.0	    06-28-05 15:12:51	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "06-28-05"
+??FILENAME			  Text	 "实验04~1"
+??TIME				  Text	 "15:12:51"
+??VERSION			  Number 0500
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 实验04~1
+@WORDSIZE			  Text	 2
+INOUT				  Near16 CODE:0006
+IO8255A				  Number EC08
+IO8255B				  Number EC0B
+IO8255C				  Number EC0A
+IOPORT				  Number E980
+START				  Near16 CODE:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  001A Para	  none
+

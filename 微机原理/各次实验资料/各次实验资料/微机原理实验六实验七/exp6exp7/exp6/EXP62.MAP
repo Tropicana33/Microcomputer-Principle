@@ -1,0 +1,21 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00008H 00009H DATA               
+ 00010H 00031H 00022H CODE               
+
+
+Detailed map of segments
+
+ 0000:0000 0009 C=       S=DATA           G=(none)    M=D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\EXP6EXP7\EXP6\EXP62.ASM ACBP=60
+ 0001:0000 0022 C=       S=CODE           G=(none)    M=D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\EXP6EXP7\EXP6\EXP62.ASM ACBP=60
+
+Line numbers for d:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\exp6exp7\exp6\exp62.obj(D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\EXP6EXP7\EXP6\EXP62.ASM) segment CODE
+
+     7 0001:0000     8 0001:0003     9 0001:0005    10 0001:0007
+    11 0001:000A    13 0001:000E    14 0001:000F    16 0001:0011
+    17 0001:0013    18 0001:0015    19 0001:0016    20 0001:0018
+    21 0001:001B    22 0001:001E    23 0001:0020
+Program entry point at 0001:0000
+Warning: No stack
+

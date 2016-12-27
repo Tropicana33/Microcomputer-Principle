@@ -1,0 +1,25 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 0000FH 00010H DATAS              
+ 00010H 00010H 00000H STACKS             
+ 00010H 0003BH 0002CH CODES              
+
+
+Detailed map of segments
+
+ 0000:0000 0010 C=       S=DATAS          G=(none)   M=C:\USERS\ADMINI~1\DESKTOP\实验三~1\ADD31.ASM ACBP=60
+ 0001:0000 0000 C=       S=STACKS         G=(none)  M=C:\USERS\ADMINI~1\DESKTOP\实验三~1\ADD31.ASM ACBP=60
+ 0001:0000 002C C=       S=CODES          G=(none)   M=C:\USERS\ADMINI~1\DESKTOP\实验三~1\ADD31.ASM ACBP=60
+
+Line numbers for c:\users\admini~1\desktop\实验三~1\add31.obj(C:\USERS\ADMINI~1\DESKTOP\实验三~1\ADD31.ASM) segment CODES
+
+    14 0001:0000    15 0001:0003    16 0001:0005    17 0001:0008
+    18 0001:000B    20 0001:000E    21 0001:0010    22 0001:0012
+    24 0001:0014    25 0001:0016    26 0001:0018    27 0001:001B
+    28 0001:001C    29 0001:001D    30 0001:001E    31 0001:001F
+    33 0001:0021    34 0001:0023    35 0001:0025    37 0001:0028
+    38 0001:002A
+Program entry point at 0001:0000
+Warning: No stack
+

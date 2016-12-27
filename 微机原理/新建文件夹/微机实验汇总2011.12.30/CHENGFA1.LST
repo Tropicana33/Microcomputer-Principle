@@ -1,0 +1,103 @@
+Turbo Assembler	 Version 4.1	    15/10/18 21:39:03	    Page 1
+D:\学习\微机原~1\新建文~1\微机实~1.30\chengfa1.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  09 09 09			    DATA1  DB	     9,9,9
+      3	0003  09 09			    DATA2  DB	     9,9
+      4	0005  07*(??)			    DATA3  DB	     7 DUP(?)
+      5	000C  00			      CY1  DB	     0
+      6	000D  00			      CY2  DB	     0
+      7	000E				     DATA  ENDS
+      8	0000				     CODE  SEGMENT
+      9						   ASSUME    CS:CODE,DS:DATA
+     10	0000  B8 0000s			   START:  MOV	     AX,DATA
+     11	0003  8E D8				   MOV	     DS,AX
+     12	0005  B1 03				   MOV	     CL,DATA2-DATA1
+     13	0007  BB 0005r				   MOV	     BX,OFFSET DATA3
+     14	000A  8B EB				   MOV	     BP,BX
+     15	000C  BE 0000r				   MOV	     SI,OFFSET DATA1
+     16	000F  BF 0003r			    REP1:  MOV	     DI,OFFSET DATA2
+     17	0012  B5 02				   MOV	     CH,DATA3-DATA2
+     18	0014  8A 04			    REP2:  MOV	     AL,[SI]
+     19						  ; MUL	      BYTE PTR [DI]
+     20						  ; AAM			  ;ax=18,ah=1,al=8
+     21	0016  02 07				   ADD	     AL,[BX]
+     22						  ; AAA
+     23	0018  88 07				   MOV	     [BX],AL
+     24	001A  8A C4				   MOV	     AL,AH
+     25	001C  02 06 000Cr			   ADD	     AL,CY1
+     26						 ;  AAA
+     27	0020  73 04				   JNC	     NEXT1
+     28	0022  FE 06 000Dr			   INC	     CY2
+     29	0026  02 47 01			   NEXT1:  ADD	     AL,[BX+1]
+     30						  ; AAA
+     31	0029  73 04				   JNC	     NEXT2
+     32	002B  FE 06 000Dr			   INC	     CY2
+     33	002F  88 47 01			   NEXT2:  MOV	     [BX+1],AL
+     34	0032  A0 000Dr				   MOV	     AL,CY2
+     35	0035  A2 000Cr				   MOV	     CY1,AL
+     36	0038  C6 06 000Dr 00			   MOV	     CY2,0
+     37	003D  43				   INC	     BX
+     38	003E  47				   INC	     DI
+     39	003F  FE CD				   DEC	     CH
+     40	0041  75 D1				   JNZ	     REP2
+     41	0043  45				   INC	     BP
+     42	0044  8B DD				   MOV	     BX,BP
+     43	0046  46				   INC	     SI
+     44	0047  C6 06 000Cr 00			   MOV	     CY1,0
+     45	004C  FE C9				   DEC	     CL
+     46	004E  75 BF				   JNZ	     REP1
+     47	0050  BB 0005r				   MOV	     BX,OFFSET DATA3
+     48	0053  B1 07				   MOV	     CL,7
+     49	0055  8A 47 06			   LOOP1:  MOV	     AL,[BX+6]
+     50	0058  04 30				   ADD	     AL,30H
+     51	005A  8A D0				   MOV	     DL,AL
+     52	005C  B4 02				   MOV	     AH,02H
+     53	005E  CD 21				   INT	     21H
+     54	0060  4B				   DEC	     BX
+     55	0061  FE C9				   DEC	     CL
+     56	0063  75 F0				   JNZ	     LOOP1
+     57	0065  B4 4C				   MOV	     AH,4CH
+Turbo Assembler	 Version 4.1	    15/10/18 21:39:03	    Page 2
+D:\学习\微机原~1\新建文~1\微机实~1.30\chengfa1.ASM
+
+
+
+     58	0067  CD 21				   INT	     21H
+     59	0069				     CODE  ENDS
+     60						   END	     START
+Turbo Assembler	 Version 4.1	    15/10/18 21:39:03	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/10/18"
+??FILENAME		Text   "chengfa1"
+??TIME			Text   "21:39:03"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #8
+@FILENAME		Text   CHENGFA1
+@WORDSIZE		Text   2			   #1  #8
+CY1			Byte   DATA:000C		   #5  25  35  44
+CY2			Byte   DATA:000D		   #6  28  32  34  36
+DATA1			Byte   DATA:0000		   #2  12  15
+DATA2			Byte   DATA:0003		   #3  12  16  17
+DATA3			Byte   DATA:0005		   #4  13  17  47
+LOOP1			Near   CODE:0055		   #49	56
+NEXT1			Near   CODE:0026		   27  #29
+NEXT2			Near   CODE:002F		   31  #33
+REP1			Near   CODE:000F		   #16	46
+REP2			Near   CODE:0014		   #18	40
+START			Near   CODE:0000		   #10	60
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0069 Para	none		   #8  9
+DATA			16  000E Para	none		   #1  9  10
+

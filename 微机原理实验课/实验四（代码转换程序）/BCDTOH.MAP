@@ -1,0 +1,24 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00008H 00009H DATA               
+ 00010H 0004FH 00040H STACK1             
+ 00050H 0007BH 0002CH CODE               
+
+
+Detailed map of segments
+
+ 0000:0000 0009 C=       S=DATA           G=(none)    M=C:\USERS\ADMINI~1\DESKTOP\实验4~1\BCDTOH.ASM ACBP=60
+ 0001:0000 0040 C=       S=STACK1         G=(none)  M=C:\USERS\ADMINI~1\DESKTOP\实验4~1\BCDTOH.ASM ACBP=60
+ 0005:0000 002C C=       S=CODE           G=(none)    M=C:\USERS\ADMINI~1\DESKTOP\实验4~1\BCDTOH.ASM ACBP=60
+
+Line numbers for c:\users\admini~1\desktop\实验4~1\bcdtoh.obj(C:\USERS\ADMINI~1\DESKTOP\实验4~1\BCDTOH.ASM) segment CODE
+
+    17 0005:0000    18 0005:0003    19 0005:0005    20 0005:0007
+    21 0005:0009    22 0005:000D    23 0005:0010    24 0005:0013
+    25 0005:0015    28 0005:0017    29 0005:0019    30 0005:001C
+    32 0005:001E    34 0005:0020    35 0005:0022    36 0005:0024
+    37 0005:0026    41 0005:0028    42 0005:002A
+Program entry point at 0005:0000
+Warning: No stack
+

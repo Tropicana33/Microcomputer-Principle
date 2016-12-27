@@ -1,0 +1,132 @@
+Turbo Assembler	 Version 4.1	    15/11/12 17:15:55	    Page 1
+C:\Users\ADMINI~1\Desktop\实验五\实验五~1\test51.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  49 4E 50 55 54 20	44+	    ECHO1  DB	     "INPUT DECIMAL:$"
+      3	      45 43 49 4D 41 4C	3A+
+      4	      24
+      5	000F  48 45 58 20 52 45	53+	    ECHO2  DB	     "HEX RESULT IS:$"
+      6	      55 4C 54 20 49 53	3A+
+      7	      24
+      8	001E  54 4F 4F 20 42 49	47+	    ECHO3  DB	     "TOO BIG!$"
+      9	      21 24
+     10	0027				     DATA  ENDS
+     11					     CRLF  MACRO
+     12						   MOV	     AH,2
+     13						   MOV	     DL,0AH
+     14						   INT	     21H
+     15						   MOV	     AH,2
+     16						   MOV	     DL,0DH
+     17						   INT	     21H
+     18						   ENDM
+     19	0000				     CODE  SEGMENT		 ;从键盘输入十进制，转换为十六进制，并显示
+     20						   ASSUME    CS:CODE
+     21	0000  B8 0000s			   START:  MOV	     AX,DATA
+     22	0003  8E D8				   MOV	     DS,AX
+     23	0005  B4 09			  REPEAT:  MOV	     AH,9
+     24	0007  BA 0000r				   MOV	     DX,OFFSET ECHO1
+     25	000A  CD 21				   INT	     21H
+     26	000C  E8 0024				   CALL	     DECBIN
+     27						   CRLF
+1    28	000F  B4 02				   MOV	     AH,2
+1    29	0011  B2 0A				   MOV	     DL,0AH
+1    30	0013  CD 21				   INT	     21H
+1    31	0015  B4 02				   MOV	     AH,2
+1    32	0017  B2 0D				   MOV	     DL,0DH
+1    33	0019  CD 21				   INT	     21H
+     34	001B  B4 09				   MOV	     AH,9
+     35	001D  BA 000Fr				   MOV	     DX,OFFSET ECHO2
+     36	0020  CD 21				   INT	     21H
+     37	0022  E8 0039				   CALL	     BINHEX
+     38						   CRLF
+1    39	0025  B4 02				   MOV	     AH,2
+1    40	0027  B2 0A				   MOV	     DL,0AH
+1    41	0029  CD 21				   INT	     21H
+1    42	002B  B4 02				   MOV	     AH,2
+1    43	002D  B2 0D				   MOV	     DL,0DH
+1    44	002F  CD 21				   INT	     21H
+     45	0031  EB D2				   JMP	     REPEAT
+     46	0033  BB 0000			  DECBIN:  MOV	     BX,0
+     47	0036  B4 01			     NEW:  MOV	     AH,1	 ;键盘输入并回显，AL=输入字符
+     48	0038  CD 21				   INT	     21H
+     49	003A  2C 30				   SUB	     AL,30H	 ;将输入字符ascii码转换成十进制
+     50	003C  7C 14				   JL	     EXIT
+     51	003E  3C 09				   CMP	     AL,9
+     52	0040  7F 10				   JG	     EXIT	 ;小于0大于9，格式不合格直接退出
+     53	0042  98				   CBW			 ;字节扩展指令，al扩展为ax
+     54	0043  93				   XCHG	     AX,BX	 ;输入的数字存入bx，bx用来存放累加的中间结果
+     55	0044  B9 000A				   MOV	     CX,0AH
+     56	0047  F7 E1				   MUL	     CX		 ;ax*10，累加结果*10，结果放在（dx：ax）中
+     57	0049  72 08				   JC	     ERROR	 ;有进位则发生错误，跳出程序
+Turbo Assembler	 Version 4.1	    15/11/12 17:15:55	    Page 2
+C:\Users\ADMINI~1\Desktop\实验五\实验五~1\test51.ASM
+
+
+
+     58	004B  93				   XCHG	     AX,BX	 ;交换数据，将中间结果存入bx中
+     59	004C  03 D8				   ADD	     BX,AX	 ;中间结果与输入数字相加作为累加结果存入bx
+     60	004E  72 03				   JC	     ERROR
+     61	0050  EB E4				   JMP	     NEW
+     62	0052  C3			    EXIT:  RET
+     63	0053  B4 09			   ERROR:  MOV	     AH,9
+     64	0055  BA 001Er				   MOV	     DX,OFFSET ECHO3
+     65	0058  CD 21				   INT	     21H
+     66	005A  B4 4C				   MOV	     AH,4CH
+     67	005C  CD 21				   INT	     21H
+     68	005E  B5 04			  BINHEX:  MOV	     CH,4
+     69	0060  B1 04			  ROTATE:  MOV	     CL,4
+     70	0062  D3 C3				   ROL	     BX,CL
+     71	0064  8A C3				   MOV	     AL,BL
+     72	0066  24 0F				   AND	     AL,0FH
+     73	0068  04 30				   ADD	     AL,30H
+     74	006A  3C 3A				   CMP	     AL,3AH
+     75	006C  7C 02				   JL	     PRINT
+     76	006E  04 07				   ADD	     AL,7
+     77	0070  8A D0			   PRINT:  MOV	     DL,AL
+     78	0072  B4 02				   MOV	     AH,2
+     79	0074  CD 21				   INT	     21H
+     80	0076  FE CD				   DEC	     CH
+     81	0078  75 E6				   JNZ	     ROTATE
+     82	007A  C3				   RET
+     83	007B				     CODE  ENDS
+     84						   END	     START
+Turbo Assembler	 Version 4.1	    15/11/12 17:15:55	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/11/12"
+??FILENAME		Text   "test51	"
+??TIME			Text   "17:15:55"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #19
+@FILENAME		Text   TEST51
+@WORDSIZE		Text   2			   #1  #19
+BINHEX			Near   CODE:005E		   37  #68
+DECBIN			Near   CODE:0033		   26  #46
+ECHO1			Byte   DATA:0000		   #2  24
+ECHO2			Byte   DATA:000F		   #5  35
+ECHO3			Byte   DATA:001E		   #8  64
+ERROR			Near   CODE:0053		   57  60  #63
+EXIT			Near   CODE:0052		   50  52  #62
+NEW			Near   CODE:0036		   #47	61
+PRINT			Near   CODE:0070		   75  #77
+REPEAT			Near   CODE:0005		   #23	45
+ROTATE			Near   CODE:0060		   #69	81
+START			Near   CODE:0000		   #21	84
+
+Macro Name						   Cref	(defined at #)
+
+CRLF							   #11	27  38
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  007B Para	none		   #19	20
+DATA			16  0027 Para	none		   #1  21
+

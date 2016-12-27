@@ -1,0 +1,121 @@
+Turbo Assembler	 Version 5.0	    06-28-05 15:58:21	    Page 1
+实验16~1.ASM
+
+
+
+      1	0000			     data segment
+      2	      =E980		     ioport	     equ 0ec00h-0280h
+      3	      =EC00		     io8253a	     equ ioport+280h
+      4	      =EC03		     io8253b	     equ ioport+283h
+      5	      =EC38		     io8251a	     equ ioport+2b8h
+      6	      =EC39		     io8251b	     equ ioport+2b9h
+      7	0000  79 6F 75 20 63 61	6E+    mes1 db 'you can	play a key on the keybord!',0dh,0ah,24h
+      8	      20 70 6C 61 79 20	61+
+      9	      20 6B 65 79 20 6F	6E+
+     10	      20 74 68 65 20 6B	65+
+     11	      79 62 6F 72 64 21	0D+
+     12	      0A 24
+     13	0025  00000000sr	       mes2 dd	mes1
+     14	0029			     data ends
+     15	0000			     code segment
+     16					assume cs:code,ds:data
+     17	0000  B8 0000s		     start:  mov ax,data
+     18	0003  8E D8			       mov ds,ax
+     19	0005  BA EC03			       mov dx,io8253b	 ;设置8253计数器0工作方式
+     20	0008  B0 16			       mov al,16h
+     21	000A  EE			       out dx,al
+     22	000B  BA EC00			       mov dx,io8253a
+     23	000E  B0 34			       mov al,52	 ;给8253计数器0送初值
+     24	0010  EE			       out dx,al
+     25	0011  BA EC39			       mov dx,io8251b	 ;初始化8251
+     26	0014  32 C0			       xor al,al
+     27	0016  B9 0003			       mov cx,03	 ;向8251控制端口送3个0
+     28	0019  E8 004C		      delay: call out1
+     29	001C  E2 FB			       loop delay
+     30	001E  B0 40			       mov al,40h	 ;向8251控制端口送40H,使其复位D6=1
+     31	0020  E8 0045			       call out1
+     32	0023  B0 4E			       mov al,4eh	 ;设置为1个停止位,8个数据位,波特率因子为16
+     33	0025  E8 0040			       call out1
+     34	0028  B0 27			       mov al,27h	 ;向8251送控制字允许其发送和接收
+     35	002A  E8 003B			       call out1
+     36	002D  C5 16 0025r		       lds dx,mes2	 ;显示提示信息 'you can	play a key on the keybord!'
+     37	0031  B4 09			       mov ah,09
+     38	0033  CD 21			       int 21h
+     39	0035  BA EC39		     waiti: mov	dx,io8251b
+     40	0038  EC			      in al,dx
+     41	0039  A8 01			      test al,01	;发送是否准备好
+     42	003B  74 F8			      jz waiti
+     43	003D  B4 01			      mov ah,01		;是,从键盘上读一字符
+     44	003F  CD 21			      int 21h
+     45	0041  3C 1B			      cmp al,27		;若为ESC,结束
+     46	0043  74 1F			      jz exit
+     47	0045  BA EC38			      mov dx,io8251a
+     48	0048  FE C0			      inc al
+     49	004A  EE			      out dx,al		;发送
+     50	004B  B9 0F00			      mov cx,0F00h
+     51	004E  E2 FE		     s51:   loop s51	      ;延时
+     52	0050  BA EC39		     next:  mov	dx,io8251b
+     53	0053  EC			      in al,dx
+     54	0054  A8 02			      test al,02	;检查接收是否准备好
+     55	0056  74 F8			      jz next		;没有,等待
+     56	0058  BA EC38			      mov dx,io8251a
+     57	005B  EC			      in al,dx		;准备好,接收
+Turbo Assembler	 Version 5.0	    06-28-05 15:58:21	    Page 2
+实验16~1.ASM
+
+
+
+     58	005C  8A D0			      mov dl,al
+     59	005E  B4 02			      mov ah,02		;将接收到的字符显示在屏幕上
+     60	0060  CD 21			      int 21h
+     61	0062  EB D1			      jmp waiti
+     62	0064  B4 4C		     exit:  mov	ah,4ch	      ;退出
+     63	0066  CD 21			      int 21h
+     64
+     65	0068			     out1    proc   near      ;向外发送一字节的子程序
+     66	0068  EE			       out  dx,al
+     67	0069  51			       push cx
+     68	006A  B9 0F00			       mov  cx,0F00h
+     69	006D  E2 FE		     gg:     loop gg	      ;延时
+     70	006F  59			       pop  cx
+     71	0070  C3			       ret
+     72	0071			     out1	 endp
+     73	0071			     code ends
+     74				     end start
+Turbo Assembler	 Version 5.0	    06-28-05 15:58:21	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "06-28-05"
+??FILENAME			  Text	 "实验16~1"
+??TIME				  Text	 "15:58:21"
+??VERSION			  Number 0500
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 实验16~1
+@WORDSIZE			  Text	 2
+DELAY				  Near16 CODE:0019
+EXIT				  Near16 CODE:0064
+GG				  Near16 CODE:006D
+IO8251A				  Number EC38
+IO8251B				  Number EC39
+IO8253A				  Number EC00
+IO8253B				  Number EC03
+IOPORT				  Number E980
+MES1				  Byte	 DATA:0000
+MES2				  Dword	 DATA:0025
+NEXT				  Near16 CODE:0050
+OUT1				  Near16 CODE:0068
+S51				  Near16 CODE:004E
+START				  Near16 CODE:0000
+WAITI				  Near16 CODE:0035
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  0071 Para	  none
+DATA				  16  0029 Para	  none
+

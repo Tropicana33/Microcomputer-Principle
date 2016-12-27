@@ -1,0 +1,98 @@
+Turbo Assembler	 Version 4.1	    15/10/18 21:36:07	    Page 1
+D:\学习\微机原~1\新建文~1\微机实~1.30\add.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  20 32 36 38 35 39	24	    DATA1  DB	     ' ','2','6','8','5','9','$'	 ;'				    +
+      3				     '空格用来存放最高位进位，'$'是DOS功能调用INT 21H中9号功能要求的要显示字符串的结束标志。
+      4	0007  2B 31 34 37 36 34	3D+	    DATA2  DB	     '+','1','4','7','6','4','=',0DH,0AH,'$'	     ;0DH,0AH,		    +
+      5	      0D 0A 24		     '$'中0DH和0AH分别是回车和换行的ASCII码
+      6	0011				     DATA  ENDS
+      7	0000				   STACK1  SEGMENT   PARA STACK	'STACK1'
+      8	0000  64*(??)				   DB	     100 DUP (?)
+      9	0064				   STACK1  ENDS
+     10	0000				     CODE  SEGMENT
+     11						   ASSUME    CS:CODE,DS:DATA,SS:STACK1
+     12	0000				   START:
+     13	0000  B8 0000s				   MOV	     AX,DATA
+     14	0003  8E D8				   MOV	     DS,AX
+     15	0005  B8 0000s				   MOV	     AX,STACK1
+     16	0008  8E D0				   MOV	     SS,AX
+     17	000A  B4 0A				   MOV	     AH,0AH
+     18	000C  CD 21				   INT	     21H
+     19	000E  8B DA				   MOV	     BX,DX
+     20	0010  8B 47 01				   MOV	     AX,[BX+1]
+     21	0013  BA 0000r				   LEA	     DX,DATA1	 ;等价于MOV   DX，OFFSET DATA1
+     22	0016  B4 09				   MOV	     AH,09H
+     23	0018  CD 21				   INT	     21H
+     24	001A  BA 0007r				   LEA	     DX,DATA2
+     25	001D  B4 09				   MOV	     AH,09H
+     26	001F  CD 21				   INT	     21H
+     27
+     28	0021  BF 0005				   MOV	     DI,5
+     29	0024  BE 0005				   MOV	     SI,5
+     30	0027  B9 0005				   MOV	     CX,5
+     31	002A  B4 00				   MOV	     AH,0
+     32	002C				   NEXT1:
+     33	002C  8A 84 0007r			   MOV	     AL,DATA2[SI]
+     34	0030  02 85 0000r			   ADD	     AL,DATA1[DI]
+     35	0034  37				   AAA
+     36	0035  0C 30				   OR	     AL,30H	 ;调整为ASCII码
+     37	0037  88 85 0000r			   MOV	     DATA1[DI],AL
+     38	003B  4F				   DEC	     DI
+     39	003C  4E				   DEC	     SI
+     40	003D  49				   DEC	     CX
+     41	003E  E3 11				   JCXZ	     EXIT	 ;CX=0则转移
+     42	0040  EB 01 90				   JMP	     NEXT2
+     43
+     44
+     45	0043				   NEXT2:
+     46	0043  8A 85 0000r			   MOV	     AL,DATA1[DI]
+     47	0047  02 C4				   ADD	     AL,AH
+     48	0049  88 85 0000r			   MOV	     DATA1[DI],AL
+     49	004D  B4 00				   MOV	     AH,0
+     50	004F  EB DB				   JMP	     NEXT1
+     51
+     52	0051				    EXIT:
+     53	0051  BA 0000r				   LEA	     DX,DATA1
+     54	0054  B4 09				   MOV	     AH,09H
+     55	0056  CD 21				   INT	     21H
+     56	0058  B4 4C				   MOV	     AH,4CH	 ;返回dos
+     57	005A  CD 21				   INT	     21H
+Turbo Assembler	 Version 4.1	    15/10/18 21:36:07	    Page 2
+D:\学习\微机原~1\新建文~1\微机实~1.30\add.ASM
+
+
+
+     58	005C				     CODE  ENDS
+     59						   END	     START
+Turbo Assembler	 Version 4.1	    15/10/18 21:36:07	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/10/18"
+??FILENAME		Text   "add	"
+??TIME			Text   "21:36:07"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #7  #10
+@FILENAME		Text   ADD
+@WORDSIZE		Text   2			   #1  #7  #10
+DATA1			Byte   DATA:0000		   #2  21  34  37  46  48  53
+DATA2			Byte   DATA:0007		   #4  24  33
+EXIT			Near   CODE:0051		   41  #52
+NEXT1			Near   CODE:002C		   #32	50
+NEXT2			Near   CODE:0043		   42  #45
+START			Near   CODE:0000		   #12	59
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  005C Para	none		   #10	11
+DATA			16  0011 Para	none		   #1  11  13
+STACK1			16  0064 Para	Stack	STACK1	   #7  11  15
+

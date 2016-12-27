@@ -1,0 +1,66 @@
+Turbo Assembler	 Version 4.1	    16/10/10 11:25:48	    Page 1
+D:\学习\微机原~1\姚国斌\微机原~1\实验二~1\NoName.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  1234			       A1  DW	     1234H
+      3	0002  38 56 41 42 43 44			   DB	     56,56H,"ABCD"
+      4	0008				     DATA  ENDS
+      5	0000				    EXTRA  SEGMENT
+      6	0000  01 02 03 04 05		       B1  DB	     1,2,3,4,5
+      7	0005				    EXTRA  ENDS
+      8	0000				   STACKS  SEGMENT
+      9	0000  20*(??)			      BTM  DB	     32	DUP(?)
+     10	0020				   STACKS  ENDS
+     11	0000				     CODE  SEGMENT
+     12						   ASSUME    CS:CODE,DS:DATA,ES:EXTRA,SS:STACKS
+     13	0000  B8 0000s			   START:  MOV	     AX,DATA
+     14	0003  8E D8				   MOV	     DS,AX
+     15	0005  B8 0000s				   MOV	     AX,EXTRA
+     16	0008  8E C0				   MOV	     ES,AX
+     17	000A  B8 0000s				   MOV	     AX,STACKS
+     18	000D  8E D0				   MOV	     SS,AX
+     19	000F  BC 0020				   MOV	     SP,SIZE BTM
+     20	0012  A1 0001r				   MOV	     AX,A1+1
+     21	0015  BD 0000r				   MOV	     BP,OFFSET A1
+     22	0018  8B 46 00				   MOV	     AX,[BP]
+     23	001B  3E: 8B 46	00			   MOV	     AX,DS:[BP]
+     24	001F  26: 8B 46	00			   MOV	     AX,ES:[BP]
+     25	0023  BB 0000r				   MOV	     BX,OFFSET A1
+     26	0026  8B 47 03				   MOV	     AX,[BX+3]
+     27	0029  26: 8B 47	03			   MOV	     AX,ES:[BX+3]
+     28	002D  50				   PUSH	     AX
+     29	002E  5B				   POP	     BX
+     30	002F  B4 4C				   MOV	     AH,4CH
+     31	0031  CD 21				   INT	     21H
+     32	0033				     CODE  ENDS
+     33						   END	     START
+Turbo Assembler	 Version 4.1	    16/10/10 11:25:48	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "16/10/10"
+??FILENAME		Text   "NoName	"
+??TIME			Text   "11:25:48"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #5  #8  #11
+@FILENAME		Text   NONAME
+@WORDSIZE		Text   2			   #1  #5  #8  #11
+A1			Word   DATA:0000		   #2  20  21  25
+B1			Byte   EXTRA:0000		   #6
+BTM			Byte   STACKS:0000		   #9  19
+START			Near   CODE:0000		   #13	33
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0033 Para	none		   #11	12
+DATA			16  0008 Para	none		   #1  12  13
+EXTRA			16  0005 Para	none		   #5  12  15
+STACKS			16  0020 Para	none		   #8  12  17
+

@@ -1,0 +1,57 @@
+Turbo Assembler	 Version 5.0	    06-21-05 15:41:36	    Page 1
+可编程~1.ASM
+
+
+
+      1	      =D180		     ioport	     equ 0d400h-0280h
+      2	      =D400		     io8253a	     equ ioport+280h
+      3	      =D401		     io8253b	     equ ioport+281h
+      4	      =D403		     io8253c	     equ ioport+283h
+      5	0000			     code segment
+      6					     assume   cs:code
+      7	0000  BA D403		     start:mov dx,io8253c     ;向8254写控制字
+      8	0003  B0 36			     mov al,36h	      ;使0通道为工作方式3
+      9	0005  EE			     out dx,al
+     10	0006  B8 03E8			     mov ax,1000      ;写入循环计数初值1000
+     11	0009  BA D400			     mov dx,io8253a
+     12	000C  EE			     out dx,al	      ;先写入低字节
+     13	000D  8A C4			     mov al,ah
+     14	000F  EE			     out dx,al	      ;后写入高字节
+     15	0010  BA D403			     mov dx,io8253c
+     16	0013  B0 76			     mov al,76h	      ;设8254通道1工作方式2
+     17	0015  EE			     out dx,al
+     18	0016  B8 03E8			     mov ax,1000      ;写入循环计数初值1000
+     19	0019  BA D401			     mov dx,io8253b
+     20	001C  EE			     out dx,al	      ;先写低字节
+     21	001D  8A C4			     mov al,ah
+     22	001F  EE			     out dx,al	      ;后写高字节
+     23	0020  B4 4C			     mov ah,4ch	      ;程序退出
+     24	0022  CD 21			     int 21h
+     25	0024			       code ends
+     26					     end start
+Turbo Assembler	 Version 5.0	    06-21-05 15:41:36	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "06-21-05"
+??FILENAME			  Text	 "可编程~1"
+??TIME				  Text	 "15:41:36"
+??VERSION			  Number 0500
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 可编程~1
+@WORDSIZE			  Text	 2
+IO8253A				  Number D400
+IO8253B				  Number D401
+IO8253C				  Number D403
+IOPORT				  Number D180
+START				  Near16 CODE:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  0024 Para	  none
+

@@ -1,0 +1,40 @@
+;*******************************;
+;*        8255方式1实验1       *;
+;*******************************;
+
+        CODE  SEGMENT
+              ASSUME    CS:CODE
+      START:
+              MOV       AX,CS
+              MOV       DS,AX
+              MOV       DX,OFFSET INT_PROC
+              MOV       AX,250BH
+              INT       21H
+              MOV       DX,21H
+              IN        AL,DX
+              AND       AL,0F7H
+              OUT       DX,AL
+              MOV       DX,28BH
+              MOV       AL,0A0H
+              OUT       DX,AL
+              MOV       AL,0DH
+              OUT       DX,AL
+              MOV       BL,1
+         LL:  JMP       LL
+   INT_PROC:
+              MOV       AL,BL
+              MOV       DX,288H
+              OUT       DX,AL
+              MOV       AL,20H
+              OUT       20H,AL
+              SHL       BL,1
+              JNC       NEXT
+              IN        AL,21H
+              OR        AL,08H
+              OUT       21H,AL
+              STI
+              MOV       AH,4CH
+              INT       21H
+       NEXT:  IRET
+        CODE  ENDS
+              END       START

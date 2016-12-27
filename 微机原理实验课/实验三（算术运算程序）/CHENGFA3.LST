@@ -1,0 +1,132 @@
+Turbo Assembler	 Version 4.1	    15/10/26 20:36:34	    Page 1
+C:\Users\ADMINI~1\Desktop\实验三~1\chengfa3.ASM
+
+
+
+      1	0000				    DATAS  SEGMENT
+      2	0000  DE BC 9A			    DATA1  DB	     0DEH,0BCH,9AH
+      3	0003  34 12			    DATA2  DB	     34H,12H
+      4
+      5	0005  00 00 00 00		       T1  DB	     0,0,0,0
+      6	0009  00 00 00 00		       T2  DB	     0,0,0,0
+      7	000D  05*(??)				R  DB	     5 DUP(?)	 ;此处输入数据段代码
+      8	0012				    DATAS  ENDS
+      9
+     10	0000				   STACKS  SEGMENT
+     11					 ;此处输入堆栈段代码
+     12	0000				   STACKS  ENDS
+     13
+     14	0000				    CODES  SEGMENT
+     15						   ASSUME    CS:CODES,DS:DATAS,SS:STACKS
+     16	0000				   START:
+     17	0000  B8 0000s				   MOV	     AX,DATAS
+     18	0003  8E D8				   MOV	     DS,AX
+     19
+     20	0005  BE 0000r				   LEA	     SI,DATA1	 ;取两个数据的首地址
+     21	0008  BF 0003r				   LEA	     DI,DATA2
+     22
+     23	000B  8A 44 02				   MOV	     AL,[SI+2]	 ;第一次循环
+     24	000E  8A 5D 01				   MOV	     BL,[DI+1]
+     25	0011  F6 E3				   MUL	     BL
+     26	0013  8A CC				   MOV	     CL,AH	 ;进位
+     27	0015  A2 0008r				   MOV	     [T1+3],AL
+     28
+     29	0018  8A 44 01				   MOV	     AL,[SI+1]
+     30	001B  F6 E3				   MUL	     BL
+     31	001D  02 C1				   ADD	     AL,CL
+     32	001F  A2 0007r				   MOV	     [T1+2],AL
+     33	0022  80 D4 00				   ADC	     AH,0
+     34	0025  8A CC				   MOV	     CL,AH
+     35
+     36
+     37	0027  8A 04				   MOV	     AL, [SI]
+     38	0029  F6 E3				   MUL	     BL
+     39	002B  02 C1				   ADD	     AL,CL
+     40	002D  A2 0006r				   MOV	     [T1+1],AL
+     41	0030  80 D4 00				   ADC	     AH,0
+     42	0033  88 26 0005r			   MOV	     [T1],AH
+     43
+     44
+     45	0037  8A 44 02				   MOV	     AL,[SI+2]	 ;第二次循环
+     46	003A  8A 1D				   MOV	     BL,[DI]
+     47	003C  F6 E3				   MUL	     BL
+     48	003E  8A CC				   MOV	     CL,AH	 ;进位存入cl
+     49	0040  A2 000Cr				   MOV	     [T2+3],AL
+     50
+     51	0043  8A 44 01				   MOV	     AL,[SI+1]
+     52	0046  F6 E3				   MUL	     BL
+     53	0048  02 C1				   ADD	     AL,CL
+     54	004A  A2 000Br				   MOV	     [T2+2],AL
+     55	004D  80 D4 00				   ADC	     AH,0
+     56	0050  8A CC				   MOV	     CL,AH
+     57
+Turbo Assembler	 Version 4.1	    15/10/26 20:36:34	    Page 2
+C:\Users\ADMINI~1\Desktop\实验三~1\chengfa3.ASM
+
+
+
+     58
+     59	0052  8A 04				   MOV	     AL, [SI]
+     60	0054  F6 E3				   MUL	     BL
+     61	0056  02 C1				   ADD	     AL,CL
+     62	0058  A2 000Ar				   MOV	     [T2+1],AL
+     63	005B  80 D4 00				   ADC	     AH,0
+     64	005E  88 26 0009r			   MOV	     [T2],AH
+     65
+     66						   ;T1,T2结果错位相加  存入R
+     67	0062  BF 0005r				   LEA	     DI,T1
+     68	0065  BE 0009r				   LEA	     SI,T2
+     69
+     70	0068  A0 0008r				   MOV	     AL,[T1+3]
+     71	006B  A2 0011r				   MOV	     [R+4],AL
+     72
+     73	006E  A0 0007r				   MOV	     AL,[T1+2]
+     74	0071  02 06 000Cr			   ADD	     AL,[T2+3]
+     75	0075  A2 0010r				   MOV	     [R+3],AL
+     76
+     77	0078  A0 0006r				   MOV	     AL,[T1+1]
+     78	007B  12 06 000Br			   ADC	     AL,[T2+2]
+     79	007F  A2 000Fr				   MOV	     [R+2],AL
+     80
+     81	0082  A0 0005r				   MOV	     AL,[T1]
+     82	0085  12 06 000Ar			   ADC	     AL,[T2+1]
+     83	0089  A2 000Er				   MOV	     [R+1],AL
+     84	008C  A0 0009r				   MOV	     AL,[T2]
+     85	008F  14 00				   ADC	     AL,0
+     86	0091  A2 000Dr				   MOV	     [R],AL
+     87
+     88
+     89
+     90	0094  B4 4C				   MOV	     AH,4CH
+     91	0096  CD 21				   INT	     21H
+     92	0098				    CODES  ENDS
+     93						   END	     START
+Turbo Assembler	 Version 4.1	    15/10/26 20:36:34	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/10/26"
+??FILENAME		Text   "chengfa3"
+??TIME			Text   "20:36:34"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODES			   #1  #10  #14
+@FILENAME		Text   CHENGFA3
+@WORDSIZE		Text   2			   #1  #10  #14
+DATA1			Byte   DATAS:0000		   #2  20
+DATA2			Byte   DATAS:0003		   #3  21
+R			Byte   DATAS:000D		   #7  71  75  79  83  86
+START			Near   CODES:0000		   #16	93
+T1			Byte   DATAS:0005		   #5  27  32  40  42  67  70  73  77  81
+T2			Byte   DATAS:0009		   #6  49  54  62  64  68  74  78  82  84
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODES			16  0098 Para	none		   #14	15
+DATAS			16  0012 Para	none		   #1  15  17
+STACKS			16  0000 Para	none		   #10	15
+

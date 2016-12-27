@@ -1,0 +1,60 @@
+Turbo Assembler	 Version 4.1	    15/11/09 16:20:55	    Page 1
+D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\exp6exp7\exp6\EXP63.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  41 42 39 44 45 46	47+	    DATA1  DB	     "AB9DEFGHIJKLMNOP"
+      3	      48 49 4A 4B 4C 4D	4E+
+      4	      4F 50
+      5	0010  41 42 43 44 45 46	47+	    DATA2  DB	     "ABCDEFGHIJKLMNOP"
+      6	      48 49 4A 4B 4C 4D	4E+
+      7	      4F 50
+      8	0020				     DATA  ENDS
+      9	0000				     CODE  SEGMENT
+     10						   ASSUME    CS:CODE,DS:DATA,ES:DATA
+     11	0000  B8 0000s			   START:  MOV	     AX,DATA
+     12	0003  8E D8				   MOV	     DS,AX
+     13	0005  8E C0				   MOV	     ES,AX
+     14	0007  BE 0000r				   LEA	     SI,DATA1
+     15	000A  BF 0010r				   LEA	     DI,DATA2
+     16	000D  B9 0010				   MOV	     CX,DATA2-DATA1
+     17	0010  FC				   CLD			 ;将标志寄存器flag的方向寄存器df置0
+     18	0011  F3> A6				   REPE	     CMPSB
+     19	0013  E3 05				   JCXZ	     ALL	  ;cx=0，则跳转
+     20	0015  4E				   DEC	     SI
+     21	0016  4F				   DEC	     DI
+     22	0017  EB 07 90				   JMP	     EXIT
+     23	001A  BE FFFF			     ALL:  MOV	     SI,-1
+     24	001D  BF FFFF				   MOV	     DI,-1
+     25	0020  B4 4C			    EXIT:  MOV	     AH,4CH
+     26	0022  CD 21				   INT	     21H
+     27	0024				     CODE  ENDS
+     28						   END	     START
+Turbo Assembler	 Version 4.1	    15/11/09 16:20:55	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/11/09"
+??FILENAME		Text   "EXP63	"
+??TIME			Text   "16:20:55"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #9
+@FILENAME		Text   EXP63
+@WORDSIZE		Text   2			   #1  #9
+ALL			Near   CODE:001A		   19  #23
+DATA1			Byte   DATA:0000		   #2  14  16
+DATA2			Byte   DATA:0010		   #5  15  16
+EXIT			Near   CODE:0020		   22  #25
+START			Near   CODE:0000		   #11	28
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0024 Para	none		   #9  10
+DATA			16  0020 Para	none		   #1  10  10  11
+

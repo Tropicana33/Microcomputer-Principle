@@ -1,0 +1,21 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00003H 00004H DATA               
+ 00010H 0002DH 0001EH CODE               
+
+
+Detailed map of segments
+
+ 0000:0000 0004 C=       S=DATA           G=(none)    M=F:\快盘\微机原~1\例程\EXP7\子程序\1.ASM ACBP=60
+ 0001:0000 001E C=       S=CODE           G=(none)    M=F:\快盘\微机原~1\例程\EXP7\子程序\1.ASM ACBP=60
+
+Line numbers for f:\快盘\微机原~1\例程\exp7\子程序\1.obj(F:\快盘\微机原~1\例程\EXP7\子程序\1.ASM) segment CODE
+
+    12 0001:0000    13 0001:0003    14 0001:0005    15 0001:0008
+    16 0001:000B    17 0001:000E    18 0001:0010    22 0001:0012
+    23 0001:0015    24 0001:0017    25 0001:0018    26 0001:001A
+    27 0001:001D
+Program entry point at 0001:0000
+Warning: No stack
+

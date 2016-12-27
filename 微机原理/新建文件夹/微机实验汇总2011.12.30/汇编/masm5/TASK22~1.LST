@@ -1,0 +1,79 @@
+Turbo Assembler	 Version 4.1	    11/10/19 22:50:07	    Page 1
+D:\masm5\TASK22~1.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  1234			       A1  DW	     1234H
+      3	0002  38 56 41 42 43 44			   DB	     56,56H,"ABCD"
+      4	0008				     DATA  ENDS
+      5
+      6	0000				    EXTRA  SEGMENT
+      7	0000  01 02 03 04 05		       B1  DB	     1,2,3,4,5
+      8	0005				    EXTRA  ENDS
+      9
+     10	0000				    STACK  SEGMENT
+*Warning* D:\masm5\TASK22~1.ASM(10) Reserved word used as symbol: STACK
+     11	0000  20*(??)			      BTM  DB	     32	DUP(?)
+     12	0020				   STACK  ENDS
+     13
+     14	0000				     CODE  SEGMENT
+     15						   ASSUME    CS:CODE,DS:DATA,ES:EXTRA,SS:STACK
+     16	0000  B8 0000s			   START:  MOV	     AX,DATA
+     17	0003  8E D8				   MOV	     DS,AX
+     18	0005  B8 0000s				   MOV	     AX,EXTRA
+     19	0008  8E C0				   MOV	     ES,AX
+     20	000A  B8 0000s				   MOV	     AX,STACK
+     21	000D  8E D0				   MOV	     SS,AX
+     22	000F  BC 0020				   MOV	     SP,SIZE BTM
+     23	0012  A1 0001r				   MOV	     AX,A1+1
+     24	0015  8B 46 00				   MOV	     AX,[BP]
+     25	0018  3E: 8B 46	00			   MOV	     AX,DS:[BP]
+     26	001C  26: 8B 46	00			   MOV	     AX,ES:[BP]
+     27	0020  BB 0000r				   MOV	     BX,OFFSET A1
+     28	0023  8B 47 03				   MOV	     AX,[BX+3]
+     29	0026  26: 8B 47	03			   MOV	     AX,ES:[BX+3]
+     30	002A  50				   PUSH	     AX
+     31	002B  5B				   POP	     BX
+     32	002C  B4 4C				   MOV	     AH,4CH
+     33	002E  CD 21				   INT	     21H
+     34					     CODE  END
+**Error** D:\masm5\TASK22~1.ASM(34) Illegal instruction
+     35						   END	     START
+*Warning* D:\masm5\TASK22~1.ASM(35) Open segment: CODE
+Turbo Assembler	 Version 4.1	    11/10/19 22:50:07	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "11/10/19"
+??FILENAME		Text   "TASK22~1"
+??TIME			Text   "22:50:07"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #6  #10	#14
+@FILENAME		Text   TASK22~1
+@WORDSIZE		Text   2			   #1  #6  #10	#14
+A1			Word   DATA:0000		   #2  23  27
+B1			Byte   EXTRA:0000		   #7
+BTM			Byte   STACK:0000		   #11	22
+START			Near   CODE:0000		   #16	35
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0030 Para	none		   #14	15
+DATA			16  0008 Para	none		   #1  15  16
+EXTRA			16  0005 Para	none		   #6  15  18
+STACK			16  0020 Para	none		   #10	15  20
+Turbo Assembler	 Version 4.1	    11/10/19 22:50:07	    Page 3
+Error Summary
+
+
+
+*Warning* D:\masm5\TASK22~1.ASM(10) Reserved word used as symbol: STACK
+**Error** D:\masm5\TASK22~1.ASM(34) Illegal instruction
+*Warning* D:\masm5\TASK22~1.ASM(35) Open segment: CODE
+

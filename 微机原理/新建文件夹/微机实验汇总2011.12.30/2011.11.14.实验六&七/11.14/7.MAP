@@ -1,0 +1,25 @@
+
+ Start  Stop   Length Name               Class
+
+ 00000H 00007H 00008H DATA               
+ 00010H 000D7H 000C8H STACK1             
+ 000E0H 00111H 00032H CODE               
+
+
+Detailed map of segments
+
+ 0000:0000 0008 C=       S=DATA           G=(none)    M=C:\USERS\ZZZZ\DESKTOP\11.13\7.ASM ACBP=60
+ 0001:0000 00C8 C=       S=STACK1         G=(none)  M=C:\USERS\ZZZZ\DESKTOP\11.13\7.ASM ACBP=60
+ 000E:0000 0032 C=       S=CODE           G=(none)    M=C:\USERS\ZZZZ\DESKTOP\11.13\7.ASM ACBP=60
+
+Line numbers for c:\users\zzzz\desktop\11.13\7.obj(C:\USERS\ZZZZ\DESKTOP\11.13\7.ASM) segment CODE
+
+    17 000E:0000    18 000E:0003    20 000E:0005    21 000E:0008
+    24 000E:000A    25 000E:000D    26 000E:0010    28 000E:0013
+    29 000E:0015    35 000E:0017    37 000E:0019    38 000E:001C
+    39 000E:001E    40 000E:0020    41 000E:0022    42 000E:0024
+    43 000E:0025    44 000E:0028    45 000E:002A    46 000E:002C
+    47 000E:002D    48 000E:002F    49 000E:0031
+Program entry point at 000E:0000
+Warning: No stack
+

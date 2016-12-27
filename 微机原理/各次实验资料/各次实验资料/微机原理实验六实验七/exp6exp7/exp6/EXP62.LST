@@ -1,0 +1,57 @@
+Turbo Assembler	 Version 4.1	    15/11/09 19:20:27	    Page 1
+D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~4\exp6exp7\exp6\EXP62.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  41 42 43 44 45 46	47	  STRING1  DB	     "ABCDEFG"
+      3	0007  0007			    COUNT  DW	     $-STRING1
+      4	0009				     DATA  ENDS
+      5	0000				     CODE  SEGMENT
+      6						   ASSUME    CS:CODE,DS:DATA,ES:DATA
+      7	0000  B8 0000s			   START:  MOV	     AX,DATA
+      8	0003  8E D8				   MOV	     DS,AX
+      9	0005  8E C0				   MOV	     ES,AX
+     10	0007  BF 0000r				   LEA	     DI,STRING1
+     11	000A  8B 0E 0007r			   MOV	     CX,[COUNT]
+     12
+     13	000E  FC				   CLD
+     14	000F  B0 43				   MOV	     AL,"C"	 ;输入要搜索的字符
+     15
+     16	0011  F2> AE				   REPNE     SCASB	 ;cx=0,或zf!=0时结束计算  al-es：(di)
+     17	0013  E3 06				   JCXZ	     ALL	 ;cx=0是跳转，否则执行下一条
+     18	0015  4F				   DEC	     DI		 ;获得比较的次数
+     19	0016  8B DF				   MOV	     BX,DI
+     20	0018  EB 04 90				   JMP	     EXIT
+     21	001B  BB FFFF			     ALL:  MOV	     BX,-1	       ;不存在这个数，bx=-1
+     22	001E  B4 4C			    EXIT:  MOV	     AH,4CH
+     23	0020  CD 21				   INT	     21H
+     24	0022				     CODE  ENDS
+     25						   END	     START
+Turbo Assembler	 Version 4.1	    15/11/09 19:20:27	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/11/09"
+??FILENAME		Text   "EXP62	"
+??TIME			Text   "19:20:27"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #5
+@FILENAME		Text   EXP62
+@WORDSIZE		Text   2			   #1  #5
+ALL			Near   CODE:001B		   17  #21
+COUNT			Word   DATA:0007		   #3  11
+EXIT			Near   CODE:001E		   20  #22
+START			Near   CODE:0000		   #7  25
+STRING1			Byte   DATA:0000		   #2  3  10
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0022 Para	none		   #5  6
+DATA			16  0009 Para	none		   #1  6  6  7
+

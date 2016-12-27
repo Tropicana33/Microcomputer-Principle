@@ -1,0 +1,87 @@
+Turbo Assembler	 Version 4.1	    13/11/10 17:11:43	    Page 1
+F:\快盘\微机原~1\例程\exp7\子程序\4.ASM
+
+
+
+      1				     ;***********************************************************
+      2				     ;***********************************************************
+      3				     ;此程序演示用地址表进行参数传递
+      4				     ;***********************************************************
+      5				     ;***********************************************************
+      6	0000				   STACKS  SEGMENT
+      7	0000  14*(????)			      BUF  DW	     20	DUP(?)
+      8	0028				   STACKS  ENDS
+      9	0000				    DATAS  SEGMENT		 ;数据段
+     10	0000  FF FE			    DATA1  DB	     0FFH,0FEH
+     11	0002  0000			      SUM  DW	     0
+     12	0004  02*(0000)			     LIST  DW	     2 DUP(0)
+     13	0008				    DATAS  ENDS
+     14	0000				     CODE  SEGMENT
+     15						   ASSUME    CS:CODE,DS:DATAS,SS:STACKS
+     16
+     17	0000  B8 0000s			   START:  MOV	     AX,DATAS
+     18	0003  8E D8				   MOV	     DS,AX
+     19	0005  B8 0000s				   MOV	     AX,STACKS
+     20	0008  8E D0				   MOV	     SS,AX
+     21
+     22	000A  C7 06 0004r 0000r			   MOV	     LIST,OFFSET DATA1
+     23	0010  C7 06 0006r 0002r			   MOV	     LIST+2,OFFSET SUM
+     24	0016  BB 0004r				   LEA	     BX,LIST
+     25
+     26	0019  E8 0007				   CALL	     SUM1
+     27	001C  A3 0002r				   MOV	     SUM,AX
+     28	001F  B4 4C				   MOV	     AH,4CH
+     29	0021  CD 21				   INT	     21H
+     30
+     31	0023				     SUM1  PROC	     NEAR
+     32	0023  50				   PUSH	     AX
+     33	0024  53				   PUSH	     BX
+     34	0025  51				   PUSH	     CX
+     35	0026  56				   PUSH	     SI
+     36
+     37	0027  8B 37				   MOV	     SI,[BX]
+     38	0029  8B 7F 02				   MOV	     DI,[BX+2]
+     39	002C  B8 0000				   MOV	     AX,0
+     40	002F  8A 04				   MOV	     AL,[SI]
+     41	0031  46				   INC	     SI
+     42	0032  02 04				   ADD	     AL,[SI]
+     43	0034  80 D4 00				   ADC	     AH,0
+     44	0037  89 05				   MOV	     [DI],AX
+     45
+     46	0039  5E				   POP	     SI
+     47	003A  59				   POP	     CX
+     48	003B  5B				   POP	     BX
+     49	003C  58				   POP	     AX
+     50	003D  C3				   RET
+     51	003E				     SUM1  ENDP
+     52	003E				     CODE  ENDS
+     53						   END	     START
+Turbo Assembler	 Version 4.1	    13/11/10 17:11:43	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "13/11/10"
+??FILENAME		Text   "4	"
+??TIME			Text   "17:11:43"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #6  #9  #14
+@FILENAME		Text   4
+@WORDSIZE		Text   2			   #6  #9  #14
+BUF			Word   STACKS:0000		   #7
+DATA1			Byte   DATAS:0000		   #10	22
+LIST			Word   DATAS:0004		   #12	22  23	24
+START			Near   CODE:0000		   #17	53
+SUM			Word   DATAS:0002		   #11	23  27
+SUM1			Near   CODE:0023		   26  #31
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  003E Para	none		   #14	15
+DATAS			16  0008 Para	none		   #9  15  17
+STACKS			16  0028 Para	none		   #6  15  19
+

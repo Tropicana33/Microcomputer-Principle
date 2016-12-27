@@ -1,0 +1,63 @@
+Turbo Assembler	 Version 4.1	    13/11/10 15:28:48	    Page 1
+F:\快盘\微机原~1\例程\exp7\子程序\1.ASM
+
+
+
+      1				     ;***********************************************************
+      2				     ;***********************************************************
+      3				     ;此程序演示利用寄存器进行参数传递
+      4				     ;***********************************************************
+      5				     ;***********************************************************
+      6	0000				     DATA  SEGMENT
+      7	0000  FF FE			    ARRAY  DB	     0FFH,0FEH
+      8	0002  0000			      SUM  DW	     0
+      9	0004				     DATA  ENDS
+     10	0000				     CODE  SEGMENT
+     11						   ASSUME    CS:CODE,DS:DATA
+     12	0000  B8 0000s			   START:  MOV	     AX,DATA
+     13	0003  8E D8				   MOV	     DS,AX
+     14	0005  BE 0000r				   LEA	     SI,ARRAY
+     15	0008  E8 0007				   CALL	     SUM1
+     16	000B  A3 0002r				   MOV	     SUM,AX
+     17	000E  B4 4C				   MOV	     AH,4CH
+     18	0010  CD 21				   INT	     21H
+     19
+     20
+     21	0012				     SUM1  PROC	     NEAR
+     22	0012  B8 0000				   MOV	     AX,0
+     23	0015  8A 04				   MOV	     AL,[SI]
+     24	0017  46				   INC	     SI
+     25	0018  02 04				   ADD	     AL,[SI]
+     26	001A  80 D4 00				   ADC	     AH,0
+     27	001D  C3				   RET
+     28	001E				     SUM1  ENDP
+     29
+     30
+     31	001E				     CODE  ENDS
+     32						   END	     START
+Turbo Assembler	 Version 4.1	    13/11/10 15:28:48	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "13/11/10"
+??FILENAME		Text   "1	"
+??TIME			Text   "15:28:48"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #6  #10
+@FILENAME		Text   1
+@WORDSIZE		Text   2			   #6  #10
+ARRAY			Byte   DATA:0000		   #7  14
+START			Near   CODE:0000		   #12	32
+SUM			Word   DATA:0002		   #8  16
+SUM1			Near   CODE:0012		   15  #21
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  001E Para	none		   #10	11
+DATA			16  0004 Para	none		   #6  11  12
+

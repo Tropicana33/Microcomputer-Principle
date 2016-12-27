@@ -1,0 +1,5 @@
+链接成功!
+Microsoft Windows [版本 6.1.7601]
+版权所有 (c) 2009 Microsoft Corporation。保留所有权利。
+Turbo Link  Version 7.1.30.1. Copyright (c) 1987, 1996 Borland International
+Warning: No stack

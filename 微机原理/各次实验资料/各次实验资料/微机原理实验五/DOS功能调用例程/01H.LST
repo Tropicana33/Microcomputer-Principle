@@ -1,0 +1,50 @@
+Turbo Assembler	 Version 4.1	    15/11/09 19:53:21	    Page 1
+D:\学习\微机原~1\微机原理\各次实~1\各次实~1\微机原~3\DOS功~1\01H.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  49 4E 50 55 54 20	44+	    DATA1  DB	     "INPUT DECIMAL:$"
+      3	      45 43 49 4D 41 4C	3A+
+      4	      24
+      5	000F				     DATA  ENDS
+      6	0000				     CODE  SEGMENT
+      7						   ASSUME    CS:CODE,DS:DATA
+      8	0000  B8 0000s			   START:  MOV	     AX,DATA
+      9	0003  8E D8				   MOV	     DS,AX
+     10
+     11	0005  B4 09				   MOV	     AH,9
+     12	0007  BA 0000r				   MOV	     DX,OFFSET DATA1
+     13	000A  CD 21				   INT	     21H
+     14	000C  B4 01				   MOV	     AH,1
+     15	000E  CD 21				   INT	     21H
+     16
+     17	0010  B4 4C			    EXIT:  MOV	     AH,4CH
+     18	0012  CD 21				   INT	     21H
+     19	0014				     CODE  ENDS
+     20						   END	     START
+Turbo Assembler	 Version 4.1	    15/11/09 19:53:21	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "15/11/09"
+??FILENAME		Text   "01H	"
+??TIME			Text   "19:53:21"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #6
+@FILENAME		Text   01H
+@WORDSIZE		Text   2			   #1  #6
+DATA1			Byte   DATA:0000		   #2  12
+EXIT			Near   CODE:0010		   #17
+START			Near   CODE:0000		   #8  20
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0014 Para	none		   #6  7
+DATA			16  000F Para	none		   #1  7  8
+

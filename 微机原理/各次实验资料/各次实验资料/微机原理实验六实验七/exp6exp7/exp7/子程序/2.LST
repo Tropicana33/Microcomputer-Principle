@@ -1,0 +1,55 @@
+Turbo Assembler	 Version 4.1	    13/11/10 15:47:18	    Page 1
+F:\快盘\微机原~1\例程\exp7\子程序\2.ASM
+
+
+
+      1	0000				     DATA  SEGMENT
+      2	0000  FE FD			    ARRAY  DB	     0FEH,0FDH
+      3	0002  0000			      SUM  DW	     0
+      4	0004				     DATA  ENDS
+      5	0000				     CODE  SEGMENT
+      6						   ASSUME    CS:CODE,DS:DATA
+      7	0000  B8 0000s			   START:  MOV	     AX,DATA
+      8	0003  8E D8				   MOV	     DS,AX
+      9	0005  E8 0004				   CALL	     SUM1
+     10
+     11	0008  B4 4C				   MOV	     AH,4CH
+     12	000A  CD 21				   INT	     21H
+     13	000C				     SUM1  PROC	     NEAR
+     14	000C  B8 0000				   MOV	     AX,0
+     15	000F  BE 0000				   MOV	     SI,0
+     16	0012  8A 84 0000r			   MOV	     AL,[ARRAY+SI]
+     17	0016  46				   INC	     SI
+     18	0017  02 84 0000r			   ADD	     AL,[ARRAY+SI]
+     19	001B  80 D4 00				   ADC	     AH,0
+     20	001E  A3 0002r				   MOV	     SUM,AX
+     21	0021  C3				   RET
+     22	0022				     SUM1  ENDP
+     23	0022				     CODE  ENDS
+     24						   END	     START
+Turbo Assembler	 Version 4.1	    13/11/10 15:47:18	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name		Type   Value			   Cref	(defined at #)
+
+??DATE			Text   "13/11/10"
+??FILENAME		Text   "2	"
+??TIME			Text   "15:47:18"
+??VERSION		Number 040A
+@CPU			Text   0101H
+@CURSEG			Text   CODE			   #1  #5
+@FILENAME		Text   2
+@WORDSIZE		Text   2			   #1  #5
+ARRAY			Byte   DATA:0000		   #2  16  18
+START			Near   CODE:0000		   #7  24
+SUM			Word   DATA:0002		   #3  20
+SUM1			Near   CODE:000C		   9  #13
+
+Groups & Segments	Bit Size Align	Combine	Class	   Cref	(defined at #)
+
+CODE			16  0022 Para	none		   #5  6
+DATA			16  0004 Para	none		   #1  6  7
+

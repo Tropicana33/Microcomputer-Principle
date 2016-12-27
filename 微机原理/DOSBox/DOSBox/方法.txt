@@ -1,0 +1,7 @@
+1、先将文件夹 DOSBox复制到c盘根目录下
+2、复制32位系统的debug.exe到DOSBox (debug路径c:\windows\system32)
+3、运行DOSBox文件夹的DOSBox.exe
+4、在界面中输入
+mount c: c:\dosbox
+c:
+debug
